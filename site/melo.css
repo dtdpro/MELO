@@ -1,0 +1,27 @@
+/* MLinks */
+#linkscat {
+	color: #440000;
+	font-size: 9px;
+	font-weight: bold;
+}
+#link {
+	color: #000;
+	font-size: 12px;
+}
+#link a {
+	color: #000044;
+	text-decoration: none;
+}
+#link a:hover {
+	color: #151515;
+	text-decoration: underline;
+}
+#linkcat {
+	font-size: 12px;
+	color: #004400;
+	font-weight: bold;
+	padding-top: 2px;
+}
+.linksec {
+	line-height: 1.3;
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.7" method="upgrade">
+	<name>com_melo</name>
+	<creationDate>2009.01</creationDate>
+	<author>DtD Productions</author>
+	<authorEmail>mike@dtdpro.com</authorEmail>
+	<authorUrl>http://www.ditzthedaisy.com</authorUrl>
+	<copyright>Copyright 2007-2011 DtD Productions</copyright>
+	<license>GPL v2</license>
+	<version>2.0.0</version>
+	<releaseDate>2011.10.01</releaseDate>
+	<releaseType>Update</releaseType>
+	<downloadUrl>http://www.dtdpro.com/</downloadUrl>
+	<description>COM_MELO_DESC</description>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
+	</install>
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>melo.php</filename>
+		<filename>melo.css</filename>
+		<filename>controller.php</filename>
+		<filename>metadata.xml</filename>
+		<folder>models</folder>
+		<folder>views</folder>
+	</files>
+    <administration>
+		<!-- Administration Menu Section -->
+		<submenu>
+			<menu view="cats">COM_MELO_SUBMENU_CATS</menu>
+			<menu view="scats">COM_MELO_SUBMENU_SCATS</menu>
+			<menu view="melos">COM_MELO_SUBMENU_LINKS</menu>
+		</submenu>
+		<files folder="admin">
+			<filename>index.html</filename>
+			<filename>controller.php</filename>
+			<filename>melo.php</filename>
+			<filename>install.sql</filename>
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<folder>models</folder>
+			<folder>controllers</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+			<folder>helpers</folder>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">language/en-GB.com_melo.ini</language>
+			<language tag="en-GB">language/en-GB.com_melo.sys.ini</language>
+		</languages>	
+	</administration>
+</extension>
