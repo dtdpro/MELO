@@ -31,7 +31,7 @@ class MELOModelLink extends JModelAdmin
 	 * @return	JTable	A database object
 	 * @since	1.6
 	 */
-	public function getTable($type = 'MELO', $prefix = 'LinkTable', $config = array()) 
+	public function getTable($type = 'Link', $prefix = 'MELOTable', $config = array()) 
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}

@@ -27,7 +27,7 @@ class MELOModelLinks extends JModelList
 		$app = JFactory::getApplication('administrator');
 
 		// Load the filter state.
-		$courseId = $this->getUserStateFromRequest($this->context.'.filter.course', 'filter_cat',"");
+		$courseId = $this->getUserStateFromRequest($this->context.'.filter.cat', 'filter_cat',"");
 		$this->setState('filter.cat', $courseId);
 
 		$published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
@@ -49,14 +49,14 @@ class MELOModelLinks extends JModelList
 
 		// Select some fields
 		$query->select('l.*');
+		$query->select('CONCAT(sec.sec_name," - ",cat.cat_name) AS category_name');
 
 		// From the hello table
 		$query->from('#__melo_links as l');
-		// Join over the sections.
-		$query->join('RIGHT', '#__melo_scats AS scat ON scat.scat_id = cat.cat_sec');
 		// Join over the categories.
-		$query->select('CONCAT(scat.scat_anme,"\",cat.cat_name) AS category_name');
-		$query->join('RIGHT', '#__ce_cats AS cat ON cat.cat_id = l.link_cat');
+		$query->join('RIGHT', '#__melo_cats AS cat ON cat.cat_id = l.link_cat');
+		// Join over the sections.
+		$query->join('RIGHT', '#__melo_secs AS sec ON sec.sec_id = cat.cat_sec');
 		
 		// Filter by published state
 		$published = $this->getState('filter.published');
@@ -86,16 +86,18 @@ class MELOModelLinks extends JModelList
 	}
 	
 	public function getCats() {
-		$query->select('CONCAT(scat.scat_name,"\",cat.cat_name) AS text,cat.cat_id AS value');
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select('CONCAT(sec.sec_name," - ",cat.cat_name) AS text,cat.cat_id AS value');
 		$query->from('#__melo_cats as cat');
-		$query->join('RIGHT', '#__melo_scats AS scat ON scat.scat_id = cat.cat_sec');
+		$query->join('RIGHT', '#__melo_secs AS sec ON sec.sec_id = cat.cat_sec');
 		$catId = $this->getState('filter.cat');
 		if (is_numeric($catId)) {
 			$query->where('cat.cat_id = '.(int) $catId);
 		}
-		$query->order("scat.scat_name,cat.cat_name");
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		$query->order("sec.sec_name,cat.cat_name");
+		$db->setQuery($query);
+		return $db->loadObjectList();
 	}
 
 	

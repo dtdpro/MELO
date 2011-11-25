@@ -2,7 +2,7 @@
 
 jimport('joomla.application.component.controller');
 
-class MLinksController extends JController
+class MELOController extends JController
 {
 	function display()
 	{

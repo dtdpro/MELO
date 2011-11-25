@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla table library
 jimport('joomla.database.table');
 
-class MELOTableMELO extends JTable
+class MELOTableLink extends JTable
 {
 	/**
 	 * Constructor
@@ -18,5 +18,4 @@ class MELOTableMELO extends JTable
 	{
 		parent::__construct('#__melo_links', 'link_id', $db);
 	}
-	
 }

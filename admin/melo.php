@@ -9,7 +9,7 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_melo'))
 }
 
 // require helper file
-JLoader::register('ContinuedHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'melo.php');
+JLoader::register('MELOHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'melo.php');
 
 //icon
 //$document = JFactory::getDocument();

@@ -32,7 +32,7 @@
 			filter="integer"/>
 		<field 
 			name="ordering" 
-			type="OrderCat" 
+			type="OrderLink" 
 			class="inputbox"
 			label="JFIELD_ORDERING_LABEL"
 			description="JFIELD_ORDERING_DESC" 
@@ -58,7 +58,7 @@
 			default=""
 		/>
 		<field
-			name="lnik_desc"
+			name="link_desc"
 			type="textarea"
 			label="COM_MELO_LINK_FIELD_DESC_LABEL"
 			description="COM_MELO_LINK_FIELD_DESC_DESC"
@@ -74,13 +74,8 @@
 			type="Cats"
 			label="COM_MELO_LINK_FIELD_CAT_LABEL"
 			description="COM_MELO_LINK_FIELD_CAT_DESC"
-			size="1"
 			class="inputbox"
-			required="true"
-			default="0">
-			<option	value="1">Yes</option>
-			<option	value="0">No</option>
-		</field>
+		/>
 	</fieldset>
 	
 

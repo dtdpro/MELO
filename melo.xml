@@ -31,7 +31,7 @@
 		<submenu>
 			<menu view="cats">COM_MELO_SUBMENU_CATS</menu>
 			<menu view="scats">COM_MELO_SUBMENU_SCATS</menu>
-			<menu view="melos">COM_MELO_SUBMENU_LINKS</menu>
+			<menu view="links">COM_MELO_SUBMENU_LINKS</menu>
 		</submenu>
 		<files folder="admin">
 			<filename>index.html</filename>

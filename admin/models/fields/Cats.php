@@ -26,6 +26,7 @@ class JFormFieldCats extends JFormField
 		$html = array();
 		$attr = '';
 		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
 		// Initialize some field attributes.
 		$attr .= $this->element['class'] ? ' class="'.(string) $this->element['class'].'"' : '';
 		$attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
@@ -34,15 +35,16 @@ class JFormFieldCats extends JFormField
 		// Initialize JavaScript field attributes.
 		$attr .= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 
-
 		// Build the query for the ordering list.
-		$query->select('CONCAT(scat.scat_name,"\",cat.cat_name) AS text,cat.cat_id AS value');
+		$query->select('CONCAT(sec.sec_name," - ",cat.cat_name) AS text,cat.cat_id AS value');
 		$query->from('#__melo_cats as cat');
-		$query->join('RIGHT', '#__melo_scats AS scat ON scat.scat_id = cat.cat_sec');
-		$query->order("scat.scat_name,cat.cat_name");
+		$query->join('RIGHT', '#__melo_secs AS sec ON sec.sec_id = cat.cat_sec');
+		$query->order("sec.sec_name,cat.cat_name");
 		$db->setQuery($query);
-		$html[] = JHtml::_('select.genericlist',$db->loadObjectList(),$this->name,$attr, "value","text",$this->value);
-		
+		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';
+		$html[] = '<option value="">'.JText::_('COM_MELO_LINKS_SELECT_CAT').'</option>';
+		$html[] = JHtml::_('select.options',$db->loadObjectList(),"value","text",$this->value);
+		$html[] = '</select>';
 
 		return implode($html);
 	}
