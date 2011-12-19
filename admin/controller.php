@@ -11,8 +11,8 @@ class MELOController extends JController
 	function display()
 	{
 		// Set the submenu
-		parent::display();
 		MELOHelper::addSubmenu(JRequest::getVar('view'));
+		parent::display();
 	}
 }
 ?>

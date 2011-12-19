@@ -2,82 +2,19 @@
 <!-- $Id: link.xml 62 2010-11-28 16:08:16Z melo $ -->
 <form>
 	<fieldset name="details">
-		<field
-			name="link_id"
-			type="hidden"
-		/>
-		<field
-			name="published"
-			type="list"
-			id="published"
-			class="inputbox"
-			label="JSTATUS"
-			description="JFIELD_PUBLISHED_DESC"
-			size="1"
-			default="1"
-			filter="integer">
+		<field name="link_id" type="hidden" />
+		<field name="published" type="list"	id="published" class="inputbox" label="JSTATUS"	description="JFIELD_PUBLISHED_DESC"	size="1" default="1" filter="integer">
 			<option	value="1">JPUBLISHED</option>
 			<option	value="0">JUNPUBLISHED</option>
 			<option	value="2">JARCHIVED</option>
 			<option	value="-2">JTRASHED</option>
 		</field>
-		<field
-			name="access"
-			type="accesslevel"
-			id="access"
-			class="inputbox"
-			label="JFIELD_ACCESS_LABEL"
-			description="JFIELD_ACCESS_DESC"
-			default="1"
-			filter="integer"/>
-		<field 
-			name="ordering" 
-			type="OrderLink" 
-			class="inputbox"
-			label="JFIELD_ORDERING_LABEL"
-			description="JFIELD_ORDERING_DESC" 
-		/>
-		<field
-			name="link_name"
-			type="text"
-			label="COM_MELO_LINK_FIELD_NAME_LABEL"
-			description="COM_MELO_LINK_FIELD_NAME_DESC"
-			size="60"
-			class="inputbox"
-			required="true"
-			default=""
-		/>
-		<field
-			name="link_url"
-			type="text"
-			label="COM_MELO_LINK_FIELD_URL_LABEL"
-			description="COM_MELO_LINK_FIELD_URL_DESC"
-			size="60"
-			class="inputbox"
-			required="true"
-			default=""
-		/>
-		<field
-			name="link_desc"
-			type="textarea"
-			label="COM_MELO_LINK_FIELD_DESC_LABEL"
-			description="COM_MELO_LINK_FIELD_DESC_DESC"
-			rows="4"
-			cols="70"
-			class="inputbox"
-			required="true"
-			filter="safehtml"
-			buttons="false"
-		/>
-		<field
-			name="link_cat"
-			type="Cats"
-			label="COM_MELO_LINK_FIELD_CAT_LABEL"
-			description="COM_MELO_LINK_FIELD_CAT_DESC"
-			class="inputbox"
-		/>
+		<field name="access" type="accesslevel" id="access" class="inputbox" label="JFIELD_ACCESS_LABEL" description="JFIELD_ACCESS_DESC" default="1" filter="integer" />
+		<field name="ordering" type="OrderLink" class="inputbox" label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC" />
+		<field name="link_cat" type="Cats" label="COM_MELO_LINK_FIELD_CAT_LABEL" description="COM_MELO_LINK_FIELD_CAT_DESC" class="inputbox" />
+		<field name="link_name" type="text"	label="COM_MELO_LINK_FIELD_NAME_LABEL" description="COM_MELO_LINK_FIELD_NAME_DESC" size="60" class="inputbox" required="true"	default="" />
+		<field name="link_url" type="text" label="COM_MELO_LINK_FIELD_URL_LABEL" description="COM_MELO_LINK_FIELD_URL_DESC" size="60" class="inputbox" required="true" default="" />
+		<field name="link_desc" type="textarea" label="COM_MELO_LINK_FIELD_DESC_LABEL" description="COM_MELO_LINK_FIELD_DESC_DESC" rows="4" cols="70" class="inputbox" required="true" filter="safehtml" buttons="false" />
 	</fieldset>
-	
-
 </form>
 

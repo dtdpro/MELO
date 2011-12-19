@@ -44,7 +44,7 @@ class MELOModelLink extends JModelAdmin
 	 * @since	1.6
 	 */
 	public function getForm($data = array(), $loadData = true) 
-	{
+	{	
 		// Get the form.
 		$form = $this->loadForm('com_melo.link', 'link', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 

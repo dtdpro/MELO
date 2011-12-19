@@ -78,8 +78,6 @@ class MELOViewLink extends JView
 		$isNew = $this->item->link_id == 0;
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_MELO_MANAGER_LINK_NEW') : JText::_('COM_MELO_MANAGER_LINK_EDIT'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_melo/views/link/submitbutton.js");
 		JText::script('COM_MELO_LINK_ERROR_UNACCEPTABLE');
 	}
 }
