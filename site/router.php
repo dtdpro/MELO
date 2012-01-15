@@ -56,17 +56,14 @@ function MELOParseRoute($segments)
 
 	// Count route segments
 	$count = count($segments);
-	// Standard routing for weblinks.
-	if (!isset($item)) {
+	// Standard routing 
+	if ($count) {
 		$linkid		= $segments[0];
 		if (isset($linkid)) {
 			$vars['linkid'] = $linkid;
 			$vars['disp'] = "redir";
+			$vars['view'] = "melo";
 		}
 	}
-
-
-	
-
 	return $vars;
 }

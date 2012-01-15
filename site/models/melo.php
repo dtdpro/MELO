@@ -57,18 +57,26 @@ class MELOModelMELO extends JModel
 	function getLink($linkid) {
 		$user =& JFactory::getUser();
 		$db =& JFactory::getDBO();
-		$q  = 'SELECT l.link_url as url,l.link_id FROM #__melo_links as l ';
-		$q .= 'WHERE l.link_id = '.$linkid.' && l.published >= 1 && l.access IN ('.implode(",",$user->getAuthorisedViewLevels()).') ';
+		$q=$db->getQuery(true);
+		$q->select('l.link_url as url,l.link_id');
+		$q->from('#__melo_links as l');
+		$q->where('l.link_id = '.$linkid.'');
+		$q->where('l.published >= 1');
+		$q->where('l.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$db->setQuery( $q );
 		$linkset = $db->loadObject();
 		if ($linkset) $this->trackLink($user->id,$linkid,$db);
 		return $linkset;
 	}
 	function trackLink($userid,$linkid,$db) {
-		$q = 'INSERT INTO #__melo_track (mlt_link,mlt_user,mlt_ip) VALUES ("'.$linkid.'","'.$userid.'","'.$_SERVER['REMOTE_ADDR'].'")';	
+		$q = $db->getQuery(true);
+		$q->insert('#__melo_track');
+		$q->columns(array($this->_db->quoteName('mlt_link'),$this->_db->quoteName('mlt_user'),$this->_db->quoteName('mlt_ip')));
+		$q->values('"'.$linkid.'","'.$userid.'","'.$_SERVER['REMOTE_ADDR'].'"');
 		$db->setQuery($q);
 		$db->query();
 	}
+	
 	
 }
 ?>
