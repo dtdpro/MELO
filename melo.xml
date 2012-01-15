@@ -5,7 +5,7 @@
 	<author>DtD Productions</author>
 	<authorEmail>mike@dtdpro.com</authorEmail>
 	<authorUrl>http://www.ditzthedaisy.com</authorUrl>
-	<copyright>Copyright 2007-2011 DtD Productions</copyright>
+	<copyright>Copyright 2007-2012 DtD Productions</copyright>
 	<license>GPL v2</license>
 	<version>2.0.0</version>
 	<releaseDate>2011.10.01</releaseDate>
@@ -23,15 +23,15 @@
 		<filename>melo.css</filename>
 		<filename>controller.php</filename>
 		<filename>metadata.xml</filename>
+		<filename>router.php</filename>
 		<folder>models</folder>
 		<folder>views</folder>
 	</files>
     <administration>
 		<!-- Administration Menu Section -->
 		<submenu>
-			<menu view="cats">COM_MELO_SUBMENU_CATS</menu>
-			<menu view="scats">COM_MELO_SUBMENU_SCATS</menu>
-			<menu view="links">COM_MELO_SUBMENU_LINKS</menu>
+			<menu view="wlinks">COM_MELO_SUBMENU_WLINKS</menu>
+			<menu link="option=com_categories&amp;extension=com_melo" view="categories">COM_MELO_SUBMENU_CATEGORIES</menu>
 		</submenu>
 		<files folder="admin">
 			<filename>index.html</filename>

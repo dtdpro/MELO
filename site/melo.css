@@ -1,27 +1,10 @@
-/* MLinks */
-#linkscat {
-	color: #440000;
-	font-size: 9px;
+/* MELO */
+
+#linkcat1 {
+	font-size: 12px;
 	font-weight: bold;
 }
-#link {
-	color: #000;
-	font-size: 12px;
-}
-#link a {
-	color: #000044;
-	text-decoration: none;
-}
-#link a:hover {
-	color: #151515;
-	text-decoration: underline;
-}
-#linkcat {
-	font-size: 12px;
-	color: #004400;
+#linkcat2 {
+	font-size: 11px;
 	font-weight: bold;
-	padding-top: 2px;
-}
-.linksec {
-	line-height: 1.3;
 }

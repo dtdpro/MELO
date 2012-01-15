@@ -1,19 +1,18 @@
 <?php
-defined('_JEXEC') or die('Restricted access');
+/**
+ * @package		MELO.Site
+ * @subpackage	com_melo
+ * @copyright	Copyright (C) 2011 - 2012 DtD Productions All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-require_once (JPATH_COMPONENT.DS.'controller.php');
+// No direct access.
+defined('_JEXEC') or die;
 
-if($controller = JRequest::getVar('controller')) {
-	require_once (JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
-}
 $doc = &JFactory::getDocument();
-$doc->addStyleSheet("components/com_mlinks/mlinks.css");
+$doc->addStyleSheet("components/com_melo/melo.css");
 
-$classname	= 'MLinksController'.$controller;
-$controller = new $classname( );
-
-$controller->execute( JRequest::getVar('task'));
-
+jimport('joomla.application.component.controller');
+$controller	= JController::getInstance('MELO');
+$controller->execute(JRequest::getCmd('task'));
 $controller->redirect();
-
-?>

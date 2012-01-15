@@ -9,23 +9,6 @@ CREATE TABLE IF NOT EXISTS `#__mlinks` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
 
-
-CREATE TABLE IF NOT EXISTS `#__mlinks_cats` (
-  `cat_name` varchar(30) NOT NULL,
-  `cat_id` int(2) NOT NULL auto_increment,
-  PRIMARY KEY  (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
-
-
-CREATE TABLE IF NOT EXISTS `#__mlinks_subcats` (
-  `sc_name` varchar(30) NOT NULL default 'NONE',
-  `sc_id` int(3) NOT NULL auto_increment,
-  `lcol` int(1) NOT NULL default '0',
-  `catid` int(2) NOT NULL default '0',
-  PRIMARY KEY  (`sc_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
-
-
 CREATE TABLE IF NOT EXISTS `#__mlinks_track` (
   `mlt_id` bigint(20) NOT NULL auto_increment,
   `mlt_link` int(11) NOT NULL,

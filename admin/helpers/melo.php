@@ -7,9 +7,12 @@ abstract class MELOHelper
 {
 	public static function addSubmenu($submenu) 
 	{
-		JSubMenuHelper::addEntry(JText::_('COM_MELO_SUBMENU_LINKS'), 'index.php?option=com_continued&view=melos', $submenu == 'melos');
-		JSubMenuHelper::addEntry(JText::_('COM_MELO_SUBMENU_CATS'), 'index.php?option=com_continued&view=cats', $submenu == 'cats');
-		JSubMenuHelper::addEntry(JText::_('COM_MELO_SUBMENU_SCATS'), 'index.php?option=com_continued&view=scats', $submenu == 'scats');
+		JSubMenuHelper::addEntry(JText::_('COM_MELO_SUBMENU_WLINKS'), 'index.php?option=com_melo&view=wlinks', $submenu == 'wlinks');
+		JSubMenuHelper::addEntry(JText::_('COM_MELO_SUBMENU_CATEGORIES'),'index.php?option=com_categories&extension=com_melo',$submenu == 'categories');
+		
+		if ($submenu=='categories') {
+			JToolBarHelper::title(JText::sprintf('COM_CATEGORIES_CATEGORIES_TITLE', JText::_('com_melo')),'melo-categories');
+		}
 	}
 	
 }
