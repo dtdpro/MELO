@@ -26,7 +26,7 @@ foreach ($this->linkdata as $l) {
 		echo '</div>'."\n";
 		$cnumlinks = $cnumlinks + count($l->links);
 	}
-	if ($cnumlinks >= $linkspercol) {
+	if ($cnumlinks > $linkspercol) {
 		$colreset=true;
 	}
 }

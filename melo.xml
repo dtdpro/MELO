@@ -7,7 +7,7 @@
 	<authorUrl>http://www.ditzthedaisy.com</authorUrl>
 	<copyright>Copyright 2007-2012 DtD Productions</copyright>
 	<license>GPL v2</license>
-	<version>2.0.0</version>
+	<version>2.0.4</version>
 	<releaseDate>2011.10.01</releaseDate>
 	<releaseType>Update</releaseType>
 	<downloadUrl>http://www.dtdpro.com/</downloadUrl>
@@ -51,4 +51,10 @@
 			<language tag="en-GB">language/en-GB.com_melo.sys.ini</language>
 		</languages>	
 	</administration>
+	
+	<!-- UPDATESERVER DEFINITION -->
+	<updateservers>
+		<!-- Note: No spaces or linebreaks allowed between the server tags -->
+		<server type="extension" priority="1" name="DtD Productions - MELO">http://update.ditzthedaisy.com/melo-update.xml</server>
+	</updateservers>
 </extension>

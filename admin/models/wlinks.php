@@ -16,6 +16,9 @@ class MELOModelWLinks extends JModelList
 			$config['filter_fields'] = array(
 				'link_name', 'l.link_name',
 				'ordering', 'l.ordering',
+				'access', 'l.access',
+				'published', 'l.published',
+				'link_id', 'l.link_id',
 			);
 		}
 		parent::__construct($config);
@@ -65,6 +68,10 @@ class MELOModelWLinks extends JModelList
 			$query->where('(l.published IN (0, 1))');
 		}
 
+		// Join over the asset groups.
+		$query->select('ag.title AS access_level');
+		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = l.access');
+		
 		// Filter by a single or group of categories.
 		$baselevel = 1;
 		$categoryId = $this->getState('filter.cat');
