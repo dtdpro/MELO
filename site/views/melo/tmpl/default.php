@@ -19,7 +19,7 @@ foreach ($this->linkdata as $l) {
 			echo '<div id="link" style="padding-right:5px;padding-left:'.(5*($l->cat_level+1)).'px;">';
 			echo ' <a href="';
 			if ($this->linktype == 'normal') echo $r->link_url;
-			if ($this->linktype == 'redir') echo JRoute::_('index.php?option=com_melo&disp=redir&linkid='.$r->link_id);
+			if ($this->linktype == 'redir') echo JRoute::_('index.php?option=com_melo&disp=redir&linkid='.$r->link_id.':'.$r->link_alias);
 			echo '">'.$r->link_name.'</a>';
 			echo '</div>'."\n";
 		}

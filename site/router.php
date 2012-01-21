@@ -60,7 +60,7 @@ function MELOParseRoute($segments)
 	if ($count) {
 		$linkid		= $segments[0];
 		if (isset($linkid)) {
-			$vars['linkid'] = $linkid;
+			$vars['linkid'] = (int)$linkid;
 			$vars['disp'] = "redir";
 			$vars['view'] = "melo";
 		}

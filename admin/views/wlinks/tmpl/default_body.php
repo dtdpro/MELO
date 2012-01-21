@@ -15,6 +15,8 @@ foreach($this->items as $i => $item):
 		<td>
 				<a href="<?php echo JRoute::_('index.php?option=com_melo&task=wlink.edit&link_id='.(int) $item->link_id); ?>">
 				<?php echo $item->link_name; ?></a>
+				<p class="smallsub">
+				<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->link_alias));?></p>
 		</td>
 		<td>
 			<?php echo $item->link_url; ?>

@@ -92,7 +92,13 @@ class MELOModelWLink extends JModelAdmin
 		jimport('joomla.filter.output');
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
+		
+		$table->link_alias = JApplication::stringURLSafe($table->link_alias);
 
+		if (empty($table->link_alias)) {
+			$table->link_alias = JApplication::stringURLSafe($table->link_name);
+		}
+		
 		if (empty($table->link_id)) {
 			// Set the values
 

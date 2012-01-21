@@ -1,0 +1,1 @@
+ALTER TABLE `#__melo_links` ADD `link_alias` VARCHAR( 255 ) NOT NULL AFTER `link_name`;

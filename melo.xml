@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="1.7" method="upgrade">
+<extension type="component" version="1.7.0" method="upgrade">
 	<name>com_melo</name>
 	<creationDate>2009.01</creationDate>
 	<author>DtD Productions</author>
@@ -7,16 +7,19 @@
 	<authorUrl>http://www.ditzthedaisy.com</authorUrl>
 	<copyright>Copyright 2007-2012 DtD Productions</copyright>
 	<license>GPL v2</license>
-	<version>2.0.4</version>
-	<releaseDate>2011.10.01</releaseDate>
-	<releaseType>Update</releaseType>
-	<downloadUrl>http://www.dtdpro.com/</downloadUrl>
+	<version>2.1.0</version>
 	<description>COM_MELO_DESC</description>
+	<scriptfile>script.php</scriptfile>
 	<install>
 		<sql>
-			<file charset="utf8" driver="mysql">install.sql</file>
+			<file charset="utf8" driver="mysql">sql/install.sql</file>
 		</sql>
 	</install>
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates</schemapath>
+		</schemas>
+	</update>
 	<files folder="site">
 		<filename>index.html</filename>
 		<filename>melo.php</filename>
@@ -27,6 +30,11 @@
 		<folder>models</folder>
 		<folder>views</folder>
 	</files>
+	<media destination="com_melo" folder="media">
+		<filename>index.html</filename>
+		<folder>images</folder>
+	</media>
+ 
     <administration>
 		<!-- Administration Menu Section -->
 		<submenu>
@@ -37,7 +45,6 @@
 			<filename>index.html</filename>
 			<filename>controller.php</filename>
 			<filename>melo.php</filename>
-			<filename>install.sql</filename>
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
 			<folder>models</folder>
@@ -45,6 +52,7 @@
 			<folder>tables</folder>
 			<folder>views</folder>
 			<folder>helpers</folder>
+			<folder>sql</folder>
 		</files>
 		<languages folder="admin">
 			<language tag="en-GB">language/en-GB.com_melo.ini</language>
