@@ -34,21 +34,7 @@ class com_meloInstallerScript
 	function update($parent) 
 	{
 		// $parent is the class calling this method
-		$db=JFactory::getDBO();
-		$q=$db->getQuery(true);
-		$q->select('link_name,link_id');
-		$q->from('#__melo_links');
-		$db->setQuery($q);
-		$res=$db->loadObjectList();
 		
-		foreach ($res as $r) {
-			$qu=$db->getQuery(true);
-			$qu->update('#__melo_links');
-			$qu->set('link_alias = "'.JApplication::stringURLSafe($r->link_name).'"');
-			$qu->where('link_id='.$r->link_id);
-			$db->setQuery($qu);
-			$db->query();
-		}
 		echo '<p>' . JText::_('COM_MELO_UPDATE_TEXT') . '</p>';
 	}
  

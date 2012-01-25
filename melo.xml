@@ -7,7 +7,7 @@
 	<authorUrl>http://www.ditzthedaisy.com</authorUrl>
 	<copyright>Copyright 2007-2012 DtD Productions</copyright>
 	<license>GPL v2</license>
-	<version>2.1.0</version>
+	<version>2.1.1</version>
 	<description>COM_MELO_DESC</description>
 	<scriptfile>script.php</scriptfile>
 	<install>

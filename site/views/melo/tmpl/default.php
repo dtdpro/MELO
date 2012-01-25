@@ -1,5 +1,6 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access'); 
+echo '<div id="system">';
 
 $linkspercol=((int)($this->numlinks / $this->numcols)+1);
 $cnumlinks=0;
@@ -30,5 +31,6 @@ foreach ($this->linkdata as $l) {
 		$colreset=true;
 	}
 }
+echo '</div>';
 echo '</div>';
 

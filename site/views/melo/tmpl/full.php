@@ -1,4 +1,6 @@
 <?php
+echo '<div id="system">';
+
 foreach ($this->linkdata as $l) {
 	echo '<div id="linkcat'.$l->cat_level.'" style="padding-left:'.(5*$l->cat_level).'px">'.$l->cat_title.'</div>'."\n";
 	$linklist=$l->links;
@@ -18,3 +20,4 @@ foreach ($this->linkdata as $l) {
 		echo '</div>'."\n";
 	}
 }
+echo '</div>';
