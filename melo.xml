@@ -39,8 +39,8 @@
 		<!-- Administration Menu Section -->
 		<menu img="../media/com_melo/images/melo-16x16.png">COM_MELO_MENU</menu>
 		<submenu>
-			<menu view="wlinks">COM_MELO_SUBMENU_WLINKS</menu>
-			<menu link="option=com_categories&amp;extension=com_melo" view="categories">COM_MELO_SUBMENU_CATEGORIES</menu>
+			<menu view="wlinks" img="../media/com_melo/images/melo-16x16.png">COM_MELO_SUBMENU_WLINKS</menu>
+			<menu link="option=com_categories&amp;extension=com_melo" view="categories" img="../media/com_melo/images/melocat-16x16.png" alt="MELO/Categories">COM_MELO_SUBMENU_CATEGORIES</menu>
 		</submenu>
 		<files folder="admin">
 			<filename>index.html</filename>
