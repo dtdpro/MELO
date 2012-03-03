@@ -39,7 +39,7 @@ class MELOViewWLinks extends JView
 	protected function addToolBar() 
 	{
 		$state	= $this->get('State');
-		JToolBarHelper::title(JText::_('COM_MELO_MANAGER_WLINKS'), 'links');
+		JToolBarHelper::title(JText::_('COM_MELO_MANAGER_WLINKS'), 'melo');
 		JToolBarHelper::addNew('wlink.add', 'JTOOLBAR_NEW');
 		JToolBarHelper::editList('wlink.edit', 'JTOOLBAR_EDIT');
 		JToolBarHelper::divider();

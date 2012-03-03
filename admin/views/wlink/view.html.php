@@ -51,7 +51,7 @@ class MELOViewWLink extends JView
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->link_id == 0;
-		JToolBarHelper::title($isNew ? JText::_('COM_MELO_MANAGER_WLINK_NEW') : JText::_('COM_MELO_MANAGER_WLINK_EDIT'), 'link');
+		JToolBarHelper::title($isNew ? JText::_('COM_MELO_MANAGER_WLINK_NEW') : JText::_('COM_MELO_MANAGER_WLINK_EDIT'), 'melo');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
