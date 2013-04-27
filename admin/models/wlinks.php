@@ -30,8 +30,8 @@ class MELOModelWLinks extends JModelList
 		$app = JFactory::getApplication('administrator');
 
 		// Load the filter state.
-		$courseId = $this->getUserStateFromRequest($this->context.'.filter.cat', 'filter_cat',"");
-		$this->setState('filter.cat', $courseId);
+		$catId = $this->getUserStateFromRequest($this->context.'.filter.cat', 'filter_cat',"");
+		$this->setState('filter.cat', $catId);
 
 		$published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
 		$this->setState('filter.published', $published);
@@ -90,14 +90,14 @@ class MELOModelWLinks extends JModelList
 			$query->where('l.link_cat IN ('.$categoryId.')');
 		}
 				
-		$orderCol	= $this->state->get('list.ordering');
+		$orderCol	= $this->state->get('list.ordering'); 
 		$orderDirn	= $this->state->get('list.direction');
 		
 		if ($orderCol == 'l.ordering') {
 			$orderCol = 'category_name '.$orderDirn.', l.ordering';
 		}
 		
-		$query->order($db->getEscaped($orderCol.' '.$orderDirn));
+		$query->order($db->escape($orderCol.' '.$orderDirn));
 				
 		return $query;
 	}

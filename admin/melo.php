@@ -14,7 +14,7 @@ $document = JFactory::getDocument();
 $document->addStyleDeclaration('.icon-48-melo-categories {background-image: url(../media/com_melo/images/melocat-48x48.png);}');
 $document->addStyleDeclaration('.icon-48-melo {background-image: url(../media/com_melo/images/melo-48x48.png);}');
 
-$controller = JController::getInstance('melo');
+$controller = JControllerLegacy::getInstance('melo');
 $controller->execute(JRequest::getCmd('task'));
 $controller->redirect();
 ?>

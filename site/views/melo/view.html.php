@@ -1,7 +1,7 @@
 <?php
 jimport( 'joomla.application.component.view');
 
-class MELOViewMELO extends JView
+class MELOViewMELO extends JViewLegacy
 {
 	protected $numcats;
 	protected $numcols;

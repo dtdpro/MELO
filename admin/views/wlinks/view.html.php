@@ -6,23 +6,24 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla view library
 jimport('joomla.application.component.view');
 
-class MELOViewWLinks extends JView
+class MELOViewWLinks extends JViewLegacy
 {
+	protected $items;
+	protected $pagination;
+	protected $state;
+	
 	function display($tpl = null) 
 	{
 		// Get data from the model
-		$items = $this->get('Items');
-		$pagination = $this->get('Pagination');
-		$this->state		= $this->get('State');
+		$this->state = $this->get('State');
+		$this->items = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign data to the view
-		$this->items = $items;
-		$this->pagination = $pagination;
 		// Set the toolbar
 		$this->addToolBar();
 

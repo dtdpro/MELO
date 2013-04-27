@@ -13,6 +13,6 @@ $doc = &JFactory::getDocument();
 $doc->addStyleSheet("components/com_melo/melo.css");
 
 jimport('joomla.application.component.controller');
-$controller	= JController::getInstance('MELO');
+$controller	= JControllerLegacy::getInstance('MELO');
 $controller->execute(JRequest::getCmd('task'));
 $controller->redirect();

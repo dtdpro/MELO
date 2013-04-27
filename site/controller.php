@@ -18,7 +18,7 @@ jimport('joomla.application.component.controller');
  * @subpackage	com_melo
  * @since 1.0
  */
-class MELOController extends JController
+class MELOController extends JControllerLegacy
 {
 	/**
 	 * Method to display a view.

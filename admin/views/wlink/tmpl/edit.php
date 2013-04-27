@@ -6,6 +6,17 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 ?>
+<script type="text/javascript">
+	Joomla.submitbutton = function(task)
+	{
+		if (task == 'melo.cancel' || document.formvalidator.isValid(document.id('melo-form'))) {
+			Joomla.submitform(task, document.getElementById('melo-form'));
+		}
+		else {
+			alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
+		}
+	}
+</script>
 <form action="<?php echo JRoute::_('index.php?option=com_melo&layout=edit&link_id='.(int) $this->item->link_id); ?>" method="post" name="adminForm" id="melo-form" class="form-validate">
 	<div class="width-100 fltlft">
 		<fieldset class="adminform">

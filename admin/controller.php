@@ -4,7 +4,7 @@
 jimport('joomla.application.component.controller');
 
 
-class MELOController extends JController
+class MELOController extends JControllerLegacy
 {
 	protected $default_view = 'wlinks';
 	
