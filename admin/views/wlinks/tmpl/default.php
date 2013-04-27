@@ -45,7 +45,7 @@ $saveOrder	= $listOrder == 'l.ordering';
 				<th width="100">
 					<?php echo JHtml::_('grid.sort','JGRID_HEADING_ACCESS','l.access', $listDirn, $listOrder); ?>
 				</th>	
-				<th width="100">
+				<th>
 					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ORDERING', 'l.ordering', $listDirn, $listOrder); ?>
 					<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'wlinks.saveorder'); ?>
 				</th>
