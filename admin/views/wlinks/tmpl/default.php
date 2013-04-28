@@ -45,7 +45,7 @@ $saveOrder	= $listOrder == 'l.ordering';
 				<th width="100">
 					<?php echo JHtml::_('grid.sort','JGRID_HEADING_ACCESS','l.access', $listDirn, $listOrder); ?>
 				</th>	
-				<th>
+				<th width="100">
 					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ORDERING', 'l.ordering', $listDirn, $listOrder); ?>
 					<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'wlinks.saveorder'); ?>
 				</th>
@@ -73,7 +73,7 @@ $saveOrder	= $listOrder == 'l.ordering';
 					<td>
 							<a href="<?php echo JRoute::_('index.php?option=com_melo&task=wlink.edit&link_id='.(int) $item->link_id); ?>">
 							<?php echo $item->link_name; ?></a>
-							<p class="smallsub">
+							<p class="smallsub small">
 							<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->link_alias));?></p>
 					</td>
 					<td>
@@ -96,7 +96,7 @@ $saveOrder	= $listOrder == 'l.ordering';
 								<?php endif; ?>
 							<?php endif; ?>
 							<?php $disabled = $saveOrder ?  '' : 'disabled="disabled"'; ?>
-							<input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text-area-order" />
+							<input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="width-20 text-area-order" />
 					</td>
 					<td>
 						<?php echo $item->category_name; ?>
