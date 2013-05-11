@@ -17,4 +17,5 @@ $document->addStyleDeclaration('.icon-48-melo {background-image: url(../media/co
 $controller = JControllerLegacy::getInstance('melo');
 $controller->execute(JRequest::getCmd('task'));
 $controller->redirect();
+
 ?>

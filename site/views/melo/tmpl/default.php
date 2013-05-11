@@ -21,7 +21,9 @@ foreach ($this->linkdata as $l) {
 			echo ' <a href="';
 			if ($this->linktype == 'normal') echo $r->link_url;
 			if ($this->linktype == 'redir') echo JRoute::_('index.php?option=com_melo&disp=redir&linkid='.$r->link_id.':'.$r->link_alias);
-			echo '">'.$r->link_name.'</a>';
+			echo '"';
+			if ($this->linktarget == 'new') echo ' target="_blank"';
+			echo '>'.$r->link_name.'</a>';
 			echo '</div>'."\n";
 		}
 		echo '</div>'."\n";

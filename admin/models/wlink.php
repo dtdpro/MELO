@@ -8,127 +8,186 @@ jimport('joomla.application.component.modeladmin');
 
 class MELOModelWLink extends JModelAdmin
 {
-	/**
-	 * Method override to check if you can edit an existing record.
-	 *
-	 * @param	array	$data	An array of input data.
-	 * @param	string	$key	The name of the key for the primary key.
-	 *
-	 * @return	boolean
-	 * @since	1.6
-	 */
-	protected function allowEdit($data = array(), $key = 'link_id')
+	protected $text_prefix = 'COM_MELO_WLINK';
+	
+	protected function canDelete($record)
 	{
-		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_melo.wlink.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		if (!empty($record->link_id))
+		{
+			if ($record->state != -2)
+			{
+				return;
+			}
+			$user = JFactory::getUser();
+	
+			if ($record->link_cat)
+			{
+				return $user->authorise('core.delete', 'com_melo.category.'.(int) $record->link_cat);
+			}
+			else
+			{
+				return parent::canDelete($record);
+			}
+		}
 	}
-	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	 * @since	1.6
-	 */
-	public function getTable($type = 'WLink', $prefix = 'MELOTable', $config = array()) 
+	
+	protected function canEditState($record)
+	{
+		$user = JFactory::getUser();
+	
+		if (!empty($record->link_cat))
+		{
+			return $user->authorise('core.edit.state', 'com_melo.category.'.(int) $record->link_cat);
+		}
+		else
+		{
+			return parent::canEditState($record);
+		}
+	}
+	
+	public function getTable($type = 'WLink', $prefix = 'MELOTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
-	/**
-	 * Method to get the record form.
-	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.6
-	 */
-	public function getForm($data = array(), $loadData = true) 
-	{	
+	
+	public function getForm($data = array(), $loadData = true)
+	{
+		$app = JFactory::getApplication();
+	
 		// Get the form.
 		$form = $this->loadForm('com_melo.wlink', 'wlink', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
+	
+		// Determine correct permissions to check.
+		if ($this->getState('wlink.link_id'))
+		{
+			// Existing record. Can only edit in selected categories.
+			$form->setFieldAttribute('link_cat', 'action', 'core.edit');
+		}
+		else
+		{
+			// New record. Can only create in selected categories.
+			$form->setFieldAttribute('link_cat', 'action', 'core.create');
+		}
+	
+		// Modify the form based on access controls.
+		if (!$this->canEditState((object) $data))
+		{
+			// Disable fields for display.
+			$form->setFieldAttribute('ordering', 'disabled', 'true');
+			$form->setFieldAttribute('state', 'disabled', 'true');
+			$form->setFieldAttribute('publish_up', 'disabled', 'true');
+			$form->setFieldAttribute('publish_down', 'disabled', 'true');
+	
+			// Disable fields while saving.
+			// The controller has already verified this is a record you can edit.
+			$form->setFieldAttribute('ordering', 'filter', 'unset');
+			$form->setFieldAttribute('state', 'filter', 'unset');
+			$form->setFieldAttribute('publish_up', 'filter', 'unset');
+			$form->setFieldAttribute('publish_down', 'filter', 'unset');
+		}
+	
 		return $form;
 	}
-	/**
-	 * Method to get the script that have to be included on the form
-	 *
-	 * @return string	Script files
-	 */
-	public function getScript() 
-	{
-		return 'administrator/components/com_melo/models/forms/wlink.js';
-	}
-	/**
-	 * Method to get the data that should be injected in the form.
-	 *
-	 * @return	mixed	The data for the form.
-	 * @since	1.6
-	 */
-	protected function loadFormData() 
+	
+	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_melo.edit.wlink.data', array());
-		if (empty($data)) 
+	
+		if (empty($data))
 		{
 			$data = $this->getItem();
-			if ($data->link_id == 0) {
+	
+			// Prime some default values.
+			if ($this->getState('wlink.link_id') == 0)
+			{
 				$app = JFactory::getApplication();
-				$data->set('link_cat', JRequest::getInt('link_cat', $app->getUserState('com_melo.wlinks.filter.cat')));
+				$data->set('link_cat', $app->input->get('link_cat', $app->getUserState('com_melo.wlinks.filter.category_id'), 'int'));
 			}
 		}
+	
+		$this->preprocessData('com_melo.wlink', $data);
+	
 		return $data;
 	}
 	
-	/**
-	 * Prepare and sanitise the table prior to saving.
-	 *
-	 * @since	1.6
-	 */
-	protected function prepareTable(&$table)
+	protected function prepareTable($table)
 	{
-		jimport('joomla.filter.output');
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
-		
-		$table->link_alias = JApplication::stringURLSafe($table->link_alias);
-
-		if (empty($table->link_alias)) {
+	
+		$table->link_name		= htmlspecialchars_decode($table->link_name, ENT_QUOTES);
+		$table->link_alias		= JApplication::stringURLSafe($table->link_alias);
+	
+		if (empty($table->link_alias))
+		{
 			$table->link_alias = JApplication::stringURLSafe($table->link_name);
 		}
-		
-		if (empty($table->link_id)) {
+	
+		if (empty($table->link_id))
+		{
 			// Set the values
-
+	
 			// Set ordering to the last item if not set
-			if (empty($table->ordering)) {
+			if (empty($table->ordering))
+			{
 				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__melo_links WHERE link_cat = '.$table->link_cat);
+				$db->setQuery('SELECT MAX(ordering) FROM #__melo_links');
 				$max = $db->loadResult();
-
-				$table->ordering = $max+1;
+	
+				$table->ordering = $max + 1;
 			}
-		}
-		else {
-			// Set the values
+			else
+			{
+				// Set the values
+				$table->modified	= $date->toSql();
+				$table->modified_by	= $user->get('id');
+			}
 		}
 	}
 
-	/**
-	 * A protected method to get a set of ordering conditions.
-	 *
-	 * @param	object	A record object.
-	 * @return	array	An array of conditions to add to add to ordering queries.
-	 * @since	1.6
-	 */
 	protected function getReorderConditions($table)
 	{
 		$condition = array();
-		$condition[] = 'link_cat = "'.$table->link_cat.'" ';
+		$condition[] = 'link_cat = '.(int) $table->link_cat;
 		return $condition;
 	}
 	
+	public function save($data)
+	{
+		$app = JFactory::getApplication();
 	
+		// Alter the title for save as copy
+		if ($app->input->get('task') == 'save2copy')
+		{
+			list($name, $alias) = $this->generateNewTitle($data['link_cat'], $data['link_alias'], $data['link_name']);
+			$data['link_name']	= $name;
+			$data['link_alias']	= $alias;
+			$data['state']	= 0;
+		}
+		$return = parent::save($data);
+	
+		return $return;
+	}
+	
+	protected function generateNewTitle($category_id, $alias, $name)
+	{
+		// Alter the title & alias
+		$table = $this->getTable();
+	
+		while ($table->load(array('link_alias' => $alias, 'link_cat' => $category_id)))
+		{
+			if ($name == $table->link_name)
+			{
+				$name = JString::increment($name);
+			}
+			$alias = JString::increment($alias, 'dash');
+		}
+	
+		return array($name, $alias);
+	}
 }

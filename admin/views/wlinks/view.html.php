@@ -9,59 +9,113 @@ jimport('joomla.application.component.view');
 class MELOViewWLinks extends JViewLegacy
 {
 	protected $items;
+
 	protected $pagination;
+
 	protected $state;
-	
-	function display($tpl = null) 
+
+	public function display($tpl = null)
 	{
-		// Get data from the model
-		$this->state = $this->get('State');
-		$this->items = $this->get('Items');
-		$this->pagination = $this->get('Pagination');
+		$this->state		= $this->get('State');
+		$this->items		= $this->get('Items');
+		$this->pagination	= $this->get('Pagination');
+
+		MELOHelper::addSubmenu('wlinks');
+
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
+		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseError(500, implode('<br />', $errors));
+			JError::raiseError(500, implode("\n", $errors));
 			return false;
 		}
-		// Set the toolbar
-		$this->addToolBar();
 
-		// Display the template
+		$this->addToolbar();
+		$this->sidebar = JHtmlSidebar::render();
 		parent::display($tpl);
-
-		// Set the document
-		$this->setDocument();
 	}
 
-	/**
-	 * Setting the toolbar
-	 */
-	protected function addToolBar() 
+	protected function addToolbar()
 	{
+		require_once JPATH_COMPONENT.'/helpers/melo.php';
+
 		$state	= $this->get('State');
-		JToolBarHelper::title(JText::_('COM_MELO_MANAGER_WLINKS'), 'melo');
-		JToolBarHelper::addNew('wlink.add', 'JTOOLBAR_NEW');
-		JToolBarHelper::editList('wlink.edit', 'JTOOLBAR_EDIT');
-		JToolBarHelper::divider();
-		JToolBarHelper::custom('wlinks.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
-		JToolBarHelper::custom('wlinks.unpublish', 'unpublish.png', 'unpublish_f2.png','JTOOLBAR_UNPUBLISH', true);
-		JToolBarHelper::divider();
-		if ($state->get('filter.published') == -2) {
-			JToolBarHelper::deleteList('', 'wlinks.delete', 'JTOOLBAR_EMPTY_TRASH');
-			JToolBarHelper::divider();
-		} else  {
-			JToolBarHelper::trash('wlinks.trash');
+		$canDo	= MELOHelper::getActions($state->get('filter.category_id'));
+		$user	= JFactory::getUser();
+		// Get the toolbar object instance
+		$bar = JToolBar::getInstance('toolbar');
+
+		JToolbarHelper::title(JText::_('COM_MELO_MANAGER_WLINKS'), 'wlinks.png');
+		if (count($user->getAuthorisedCategories('com_melo', 'core.create')) > 0)
+		{
+			JToolbarHelper::addNew('wlink.add');
 		}
+		if ($canDo->get('core.edit'))
+		{
+			JToolbarHelper::editList('wlink.edit');
+		}
+		if ($canDo->get('core.edit.state')) {
+
+			JToolbarHelper::publish('wlinks.publish', 'JTOOLBAR_PUBLISH', true);
+			JToolbarHelper::unpublish('wlinks.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+
+			JToolbarHelper::archiveList('wlinks.archive');
+			JToolbarHelper::checkin('wlinks.checkin');
+		}
+		if ($state->get('filter.state') == -2 && $canDo->get('core.delete'))
+		{
+			JToolbarHelper::deleteList('', 'wlinks.delete', 'JTOOLBAR_EMPTY_TRASH');
+		} elseif ($canDo->get('core.edit.state'))
+		{
+			JToolbarHelper::trash('wlinks.trash');
+		}
+		// Add a batch button
+		if ($canDo->get('core.edit'))
+		{
+			JHtml::_('bootstrap.modal', 'collapseModal');
+			$title = JText::_('JTOOLBAR_BATCH');
+			$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\">
+						<i class=\"icon-checkbox-partial\" title=\"$title\"></i>
+						$title</button>";
+			$bar->appendButton('Custom', $dhtml, 'batch');
+		}
+		if ($canDo->get('core.admin'))
+		{
+			JToolbarHelper::preferences('com_melo');
+		}
+
+
+		JHtmlSidebar::setAction('index.php?option=com_melo&view=wlinks');
+
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_PUBLISHED'),
+			'filter_state',
+			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
+		);
+
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_CATEGORY'),
+			'filter_category_id',
+			JHtml::_('select.options', JHtml::_('category.options', 'com_melo'), 'value', 'text', $this->state->get('filter.category_id'))
+		);
+
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_ACCESS'),
+			'filter_access',
+			JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'))
+		);
+
 	}
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	protected function setDocument() 
+
+	protected function getSortFields()
 	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_MELO_MANAGER_WLINKS'));
+		return array(
+			'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+			'a.state' => JText::_('JSTATUS'),
+			'a.link_name' => JText::_('JGLOBAL_TITLE'),
+			'a.access' => JText::_('JGRID_HEADING_ACCESS'),
+			'a.link_hits' => JText::_('JGLOBAL_HITS'),
+			'a.language' => JText::_('JGRID_HEADING_LANGUAGE'),
+			'a.link_id' => JText::_('JGRID_HEADING_ID')
+		);
 	}
 }

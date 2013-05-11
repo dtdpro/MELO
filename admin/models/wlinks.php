@@ -9,96 +9,155 @@ jimport('joomla.application.component.modellist');
 
 class MELOModelWLinks extends JModelList
 {
-	
 	public function __construct($config = array())
 	{
-		if (empty($config['filter_fields'])) {
+		if (empty($config['filter_fields']))
+		{
 			$config['filter_fields'] = array(
-				'link_name', 'l.link_name',
-				'ordering', 'l.ordering',
-				'access', 'l.access',
-				'published', 'l.published',
-				'link_id', 'l.link_id',
+				'link_id', 'a.link_id',
+				'link_name', 'a.link_name',
+				'alias', 'a.alias',
+				'checked_out', 'a.checked_out',
+				'checked_out_time', 'a.checked_out_time',
+				'link_cat', 'a.link_cat', 'category_title',
+				'state', 'a.state',
+				'access', 'a.access', 'access_level',
+				'created', 'a.created',
+				'created_by', 'a.created_by',
+				'ordering', 'a.ordering',
+				'featured', 'a.featured',
+				'link_hits', 'a.link_hits',
+				'publish_up', 'a.publish_up',
+				'publish_down', 'a.publish_down',
+				'link_url', 'a.link_url',
 			);
 		}
+
 		parent::__construct($config);
 	}
-	
+
 	protected function populateState($ordering = null, $direction = null)
 	{
-		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
 
 		// Load the filter state.
-		$catId = $this->getUserStateFromRequest($this->context.'.filter.cat', 'filter_cat',"");
-		$this->setState('filter.cat', $catId);
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
 
-		$published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
-		$this->setState('filter.published', $published);
-		
+		$accessId = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access', null, 'int');
+		$this->setState('filter.access', $accessId);
+
+		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
+		$this->setState('filter.state', $published);
+
+		$categoryId = $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id', '');
+		$this->setState('filter.category_id', $categoryId);
+
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_melo');
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('l.ordering', 'asc');
+		parent::populateState('a.link_name', 'asc');
 	}
-	
-	protected function getListQuery() 
+
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.access');
+		$id .= ':' . $this->getState('filter.state');
+		$id .= ':' . $this->getState('filter.category_id');
+
+		return parent::getStoreId($id);
+	}
+
+	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db = JFactory::getDBO();
+		$db = $this->getDbo();
 		$query = $db->getQuery(true);
+		$user = JFactory::getUser();
 
-		// Select some fields
-		$query->select('l.*');
-		$query->select('c.title AS category_name');
+		// Select the required fields from the table.
+		$query->select(
+			$this->getState(
+				'list.select',
+				'a.link_id, a.link_name, a.link_alias, a.checked_out, a.checked_out_time, a.link_cat,' .
+					'a.link_hits,' .
+					'a.state, a.access, a.ordering,' .
+					'a.publish_up, a.publish_down'
+			)
+		);
+		$query->from($db->quoteName('#__melo_links') . ' AS a');
 
-
-		// From the hello table
-		$query->from('#__melo_links as l');
-		// Join over the categories.
-		$query->join('LEFT', '#__categories AS c ON c.id = l.link_cat');
-		
-		// Filter by published state
-		$published = $this->getState('filter.published');
-		if (is_numeric($published)) {
-			$query->where('l.published = '.(int) $published);
-		} else if ($published === '') {
-			$query->where('(l.published IN (0, 1))');
-		}
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor')
+			->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
 
 		// Join over the asset groups.
-		$query->select('ag.title AS access_level');
-		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = l.access');
-		
-		// Filter by a single or group of categories.
-		$baselevel = 1;
-		$categoryId = $this->getState('filter.cat');
-		if (is_numeric($categoryId)) {
-			$cat_tbl = JTable::getInstance('Category', 'JTable');
-			$cat_tbl->load($categoryId);
-			$rgt = $cat_tbl->rgt;
-			$lft = $cat_tbl->lft;
-			$baselevel = (int) $cat_tbl->level;
-			$query->where('c.lft >= '.(int) $lft);
-			$query->where('c.rgt <= '.(int) $rgt);
+		$query->select('ag.title AS access_level')
+			->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+
+		// Join over the categories.
+		$query->select('c.title AS category_title')
+			->join('LEFT', '#__categories AS c ON c.id = a.link_cat');
+
+		// Filter by access level.
+		if ($access = $this->getState('filter.access'))
+		{
+			$query->where('a.access = ' . (int) $access);
 		}
-		elseif (is_array($categoryId)) {
-			JArrayHelper::toInteger($categoryId);
-			$categoryId = implode(',', $categoryId);
-			$query->where('l.link_cat IN ('.$categoryId.')');
+
+		// Implement View Level Access
+		if (!$user->authorise('core.admin'))
+		{
+			$groups = implode(',', $user->getAuthorisedViewLevels());
+			$query->where('a.access IN (' . $groups . ')');
 		}
-				
-		$orderCol	= $this->state->get('list.ordering'); 
-		$orderDirn	= $this->state->get('list.direction');
-		
-		if ($orderCol == 'l.ordering') {
-			$orderCol = 'category_name '.$orderDirn.', l.ordering';
+
+		// Filter by published state
+		$published = $this->getState('filter.state');
+		if (is_numeric($published))
+		{
+			$query->where('a.state = ' . (int) $published);
 		}
-		
-		$query->order($db->escape($orderCol.' '.$orderDirn));
-				
+		elseif ($published === '')
+		{
+			$query->where('(a.state IN (0, 1))');
+		}
+
+		// Filter by category.
+		$categoryId = $this->getState('filter.category_id');
+		if (is_numeric($categoryId))
+		{
+			$query->where('a.link_cat = ' . (int) $categoryId);
+		}
+
+		// Filter by search in title
+		$search = $this->getState('filter.search');
+		if (!empty($search))
+		{
+			if (stripos($search, 'id:') === 0)
+			{
+				$query->where('a.link_id = ' . (int) substr($search, 3));
+			}
+			else
+			{
+				$search = $db->quote('%' . $db->escape($search, true) . '%');
+				$query->where('(a.link_name LIKE ' . $search . ' OR a.link_alias LIKE ' . $search . ')');
+			}
+		}
+
+		// Add the list ordering clause.
+		$orderCol = $this->state->get('list.ordering');
+		$orderDirn = $this->state->get('list.direction');
+		if ($orderCol == 'a.ordering' || $orderCol == 'category_title')
+		{
+			$orderCol = 'c.title ' . $orderDirn . ', a.ordering';
+		}
+		$query->order($db->escape($orderCol . ' ' . $orderDirn));
+
 		return $query;
 	}
 }

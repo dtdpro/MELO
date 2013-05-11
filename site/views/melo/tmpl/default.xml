@@ -8,9 +8,13 @@
 	<!-- Add fields to the parameters object for the layout. -->
 <fields name="params">
 	<fieldset name="basic" label="COM_MENUS_BASIC_FIELDSET_LABEL">
-			<field name="linktype" type="radio" default="redir" label="Link Type" description="link type, redir has tracking">
+			<field name="linktype" type="radio" default="redir" label="Link Type" description="link type, redir has hit tracking">
 				<option value="normal">Normal</option>
 				<option value="redir">Redirect</option>
+			</field>
+			<field name="linktarget" type="radio" default="redir" label="Link Target" description="Open link in a new or same window">
+				<option value="current">Current Window</option>
+				<option value="new">New Window</option>
 			</field>
 			<field name="numcols" default="5" type="text" label="# Columns" description="Number of Columns to show" class="inputbox" />
 

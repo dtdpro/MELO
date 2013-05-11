@@ -36,7 +36,7 @@ class MELOModelMELO extends JModelLegacy
 			$lquery->from('#__melo_links AS l');
 			$lquery->where('l.link_cat = '.(int)$i->cat_id);
 			$lquery->where('l.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-			$lquery->where('l.published >= 1');
+			$lquery->where('l.state >= 1');
 			$lquery->order('l.ordering');
 			$db->setQuery($lquery);
 			$i->links = $db->loadObjectList();
@@ -61,20 +61,23 @@ class MELOModelMELO extends JModelLegacy
 		$q->select('l.link_url as url,l.link_id');
 		$q->from('#__melo_links as l');
 		$q->where('l.link_id = '.$linkid.'');
-		$q->where('l.published >= 1');
+		$q->where('l.state >= 1');
 		$q->where('l.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$db->setQuery( $q );
 		$linkset = $db->loadObject();
-		if ($linkset) $this->trackLink($user->id,$linkid,$db);
+		if ($linkset) $this->hit($linkid);
 		return $linkset;
 	}
-	function trackLink($userid,$linkid,$db) {
-		$q = $db->getQuery(true);
-		$q->insert('#__melo_track');
-		$q->columns(array($this->_db->quoteName('mlt_link'),$this->_db->quoteName('mlt_user'),$this->_db->quoteName('mlt_ip')));
-		$q->values('"'.$linkid.'","'.$userid.'","'.$_SERVER['REMOTE_ADDR'].'"');
-		$db->setQuery($q);
-		$db->query();
+
+	public function getTable($type = 'WLink', $prefix = 'MELOTable', $config = array())
+	{
+		return JTable::getInstance($type, $prefix, $config);
+	}
+	
+	public function hit($id = null)
+	{
+		$weblink = $this->getTable('WLink', 'MELOTable');
+		return $weblink->hit($id);
 	}
 	
 	

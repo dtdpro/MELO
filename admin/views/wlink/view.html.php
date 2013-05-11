@@ -9,77 +9,64 @@ jimport('joomla.application.component.view');
 class MELOViewWLink extends JViewLegacy
 {
 	
-	protected $form;
+	protected $state;
+
 	protected $item;
 
-	/**
-	 * display method of view
-	 * @return void
-	 */
-	public function display($tpl = null) 
+	protected $form;
+
+	public function display($tpl = null)
 	{
-		// get the Data
-		$this->form = $this->get('Form');
-		$this->item = $this->get('Item');
-		$script = $this->get('Script');
+		$this->state	= $this->get('State');
+		$this->item		= $this->get('Item');
+		$this->form		= $this->get('Form');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
+		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseError(500, implode('<br />', $errors));
+			JError::raiseError(500, implode("\n", $errors));
 			return false;
 		}
-		// Assign the Data
-		$this->script = $script;
 
-		// Set the toolbar
-		$this->addToolBar();
-
-		// Display the template
+		$this->addToolbar();
 		parent::display($tpl);
-
-		// Set the document
-		$this->setDocument();
 	}
 
-	/**
-	 * Setting the toolbar
-	 */
-	protected function addToolBar() 
+	protected function addToolbar()
 	{
-		JRequest::setVar('hidemainmenu', true);
-		$user = JFactory::getUser();
-		$userId = $user->id;
-		$isNew = $this->item->link_id == 0;
-		JToolBarHelper::title($isNew ? JText::_('COM_MELO_MANAGER_WLINK_NEW') : JText::_('COM_MELO_MANAGER_WLINK_EDIT'), 'melo');
-		// Built the actions for new and existing records.
-		if ($isNew) 
+		JFactory::getApplication()->input->set('hidemainmenu', true);
+
+		$user		= JFactory::getUser();
+		$userId		= $user->get('id');
+		$isNew		= ($this->item->link_id == 0);
+		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
+		// Since we don't track these assets at the item level, use the category id.
+		$canDo		= MELOHelper::getActions($this->item->link_cat, 0);
+
+		JToolbarHelper::title(JText::_('COM_MELO_MANAGER_WLINK'), 'wlinks');
+
+		// If not checked out, can save the item.
+		if (!$checkedOut && ($canDo->get('core.edit')||(count($user->getAuthorisedCategories('com_melo', 'core.create')))))
 		{
-			// For new records, check the create permission.
-			JToolBarHelper::apply('wlink.apply', 'JTOOLBAR_APPLY');
-			JToolBarHelper::save('wlink.save', 'JTOOLBAR_SAVE');
-			JToolBarHelper::custom('wlink.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			JToolBarHelper::cancel('wlink.cancel', 'JTOOLBAR_CANCEL');
+			JToolbarHelper::apply('wlink.apply');
+			JToolbarHelper::save('wlink.save');
+		}
+		if (!$checkedOut && (count($user->getAuthorisedCategories('com_melo', 'core.create')))){
+			JToolbarHelper::save2new('wlink.save2new');
+		}
+		// If an existing item, can save to a copy.
+		if (!$isNew && (count($user->getAuthorisedCategories('com_melo', 'core.create')) > 0))
+		{
+			JToolbarHelper::save2copy('wlink.save2copy');
+		}
+		if (empty($this->item->link_id))
+		{
+			JToolbarHelper::cancel('wlink.cancel');
 		}
 		else
 		{
-			JToolBarHelper::apply('wlink.apply', 'JTOOLBAR_APPLY');
-			JToolBarHelper::save('wlink.save', 'JTOOLBAR_SAVE');
-			JToolBarHelper::custom('wlink.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			JToolBarHelper::custom('wlink.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-			JToolBarHelper::cancel('wlink.cancel', 'JTOOLBAR_CLOSE');
+			JToolbarHelper::cancel('wlink.cancel', 'JTOOLBAR_CLOSE');
 		}
-	}
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	protected function setDocument() 
-	{
-		$isNew = $this->item->link_id == 0;
-		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_MELO_MANAGER_WLINK_NEW') : JText::_('COM_MELO_MANAGER_WLINK_EDIT'));
-		JText::script('COM_MELO_WLINK_ERROR_UNACCEPTABLE');
+
 	}
 }

@@ -25,6 +25,7 @@ class MELOViewMELO extends JViewLegacy
 		if ($disp != 'redir') {
 			$this->linkdata=$model->getLinks($disp);
 			$this->linktype = $params->get('linktype','redir');
+			$this->linktarget = $params->get('linktarget','current');
 			$this->numcols = $params->get('numcols',5);
 			$this->numcats=$model->getNumCats();
 			$this->numlinks=$model->getNumLinks();
