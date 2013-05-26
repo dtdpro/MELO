@@ -12,7 +12,7 @@
 				<option value="normal">Normal</option>
 				<option value="redir">Redirect</option>
 			</field>
-			<field name="linktarget" type="radio" default="redir" label="Link Target" description="Open link in a new or same window">
+			<field name="linktarget" type="radio" default="current" label="Link Target" description="Open link in a new or same window">
 				<option value="current">Current Window</option>
 				<option value="new">New Window</option>
 			</field>
