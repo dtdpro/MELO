@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.view' );
 
-class MELOViewMELO extends JViewLegacy
+class MELOViewMelo extends JViewLegacy
 {
 	function display($tpl = null)
 	{

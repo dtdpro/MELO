@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.model' );
 
-class MELOModelMELO extends JModelLegacy
+class MELOModelMelo extends JModelLegacy
 {
 
 	protected $_numcats = 0;

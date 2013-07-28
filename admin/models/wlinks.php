@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modellist');
 
 
-class MELOModelWLinks extends JModelList
+class MELOModelWlinks extends JModelList
 {
 	public function __construct($config = array())
 	{

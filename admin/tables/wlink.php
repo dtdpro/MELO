@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla table library
 jimport('joomla.database.table');
 
-class MELOTableWLink extends JTable
+class MELOTableWlink extends JTable
 {
 	public function __construct(&$db)
 	{

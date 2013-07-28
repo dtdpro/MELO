@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controlleradmin');
 
 
-class MELOControllerWLinks extends JControllerAdmin
+class MELOControllerWlinks extends JControllerAdmin
 {
 
 	protected $text_prefix = "COM_MELO_WLINK";

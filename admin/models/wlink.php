@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
-class MELOModelWLink extends JModelAdmin
+class MELOModelWlink extends JModelAdmin
 {
 	protected $text_prefix = 'COM_MELO_WLINK';
 	

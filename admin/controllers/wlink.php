@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla controllerform library
 jimport('joomla.application.component.controllerform');
 
-class MELOControllerWLink extends JControllerForm
+class MELOControllerWlink extends JControllerForm
 {
 	
 	protected function allowAdd($data = array())
