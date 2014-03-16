@@ -1,5 +1,5 @@
 <?php
-echo '<div id="system">';
+echo '<div id="system" class="uk-article">';
 
 foreach ($this->linkdata as $l) {
 	echo '<div id="linkcat'.$l->cat_level.'" style="padding-left:'.(5*$l->cat_level).'px">'.$l->cat_title.'</div>'."\n";

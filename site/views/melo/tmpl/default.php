@@ -1,6 +1,6 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access'); 
-echo '<div id="system">';
+echo '<div id="system" class="uk-article">';
 
 $linkspercol=((int)($this->numlinks / $this->numcols)+1);
 $cnumlinks=0;
